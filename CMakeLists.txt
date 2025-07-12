@@ -3,4 +3,8 @@ project(esamelabanas)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(esamelabanas main.cpp)
+add_executable(esamelabanas main.cpp
+        Transazione.cpp
+        Transazione.h
+        ContoCorrente.cpp
+        ContoCorrente.h)
