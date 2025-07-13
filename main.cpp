@@ -1,11 +1,10 @@
 #include <iostream>
+#include <algorithm>
+#include <limits>
 #include "ContoCorrente.h"
 
 int main() {
     ContoCorrente conto;
-
-    // تحميل الملف عند بدء التشغيل
-    conto.caricaDaFile("transazioni.txt");
 
     int scelta = 0;
 
@@ -25,6 +24,7 @@ int main() {
 
             std::cout << "Tipo (ingresso/uscita): ";
             std::cin >> tipo;
+            std::transform(tipo.begin(), tipo.end(), tipo.begin(), ::tolower);
 
             if (tipo != "ingresso" && tipo != "uscita") {
                 std::cout << "Tipo non valido! Operazione annullata.\n";
@@ -34,11 +34,13 @@ int main() {
             std::cout << "Importo: ";
             std::cin >> importo;
 
+            // 🔷 الحل النهائي
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
             std::cout << "Data: ";
-            std::cin >> data;
+            std::getline(std::cin, data);
 
             std::cout << "Descrizione: ";
-            std::cin.ignore(); // مسح السطر المتبقي
             std::getline(std::cin, descrizione);
 
             Transazione t(tipo, importo, data, descrizione);
@@ -51,7 +53,10 @@ int main() {
         }
 
         else if (scelta == 3) {
-            conto.salvaSuFile("transazioni.txt");
+            std::string nomeFile;
+            std::cout << "Inserisci il nome del file (incluso .txt): ";
+            std::cin >> nomeFile;
+            conto.salvaSuFile(nomeFile);
         }
 
         else if (scelta == 4) {
@@ -59,7 +64,10 @@ int main() {
         }
 
         else if (scelta == 5) {
-            conto.caricaDaFile("transazioni.txt");
+            std::string nomeFile;
+            std::cout << "Inserisci il nome del file (incluso .txt): ";
+            std::cin >> nomeFile;
+            conto.caricaDaFile(nomeFile);
         }
 
         else {

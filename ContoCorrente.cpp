@@ -1,6 +1,7 @@
 #include "ContoCorrente.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 ContoCorrente::ContoCorrente() {
     saldo = 0.0;
@@ -41,19 +42,26 @@ void ContoCorrente::salvaSuFile(const std::string& nomeFile) const {
 void ContoCorrente::caricaDaFile(const std::string& nomeFile) {
     std::ifstream file(nomeFile);
     if (!file) {
-        std::cerr << "Nessun file trovato, si parte da zero." << std::endl;
+        std::cerr << "❌ File non trovato!" << std::endl;
         return;
     }
 
-    std::string data, tipo, descrizione, importoStr;
-    double importo;
+    transazioni.clear();
+    saldo = 0.0;
 
-    while (std::getline(file, data, ';')) {
-        std::getline(file, tipo, ';');
-        std::getline(file, importoStr, ';');
-        std::getline(file, descrizione);
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line.empty()) continue;
 
-        importo = std::stod(importoStr);
+        std::istringstream ss(line);
+        std::string data, tipo, importoStr, descrizione;
+
+        std::getline(ss, data, ';');
+        std::getline(ss, tipo, ';');
+        std::getline(ss, importoStr, ';');
+        std::getline(ss, descrizione);
+
+        double importo = std::stod(importoStr);
         Transazione t(tipo, importo, data, descrizione);
         aggiungiTransazione(t);
     }
