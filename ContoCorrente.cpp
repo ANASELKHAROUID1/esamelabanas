@@ -1,70 +1,93 @@
 #include "ContoCorrente.h"
 #include <iostream>
 #include <fstream>
-#include <sstream>
-
-ContoCorrente::ContoCorrente() {
-    saldo = 0.0;
-}
+#include <cctype> // ضروري لـ tolower
 
 void ContoCorrente::aggiungiTransazione(const Transazione& t) {
     transazioni.push_back(t);
-    if (t.getTipo() == "ingresso") saldo += t.getImporto();
-    else if (t.getTipo() == "uscita") saldo -= t.getImporto();
+}
+
+int estraiNumero(const std::string& testo) {
+    std::string numero = "";
+    for (char c : testo) {
+        if (c >= '0' && c <= '9') {
+            numero += c;
+        } else {
+            break; // نتوقف عند أول حرف غير رقم
+        }
+    }
+    if (numero != "") {
+        return std::stoi(numero);
+    }
+    return 0;
 }
 
 void ContoCorrente::stampaTransazioni() const {
-    std::cout << "=== Elenco Transazioni ===" << std::endl;
-    for (const auto& t : transazioni) {
-        t.stampa();
-        std::cout << "-------------------------" << std::endl;
-    }
-    std::cout << "Saldo attuale: " << saldo << std::endl;
-}
+    std::cout << "\n=== Elenco Transazioni ===\n";
 
-double ContoCorrente::getSaldo() const {
-    return saldo;
+    if (transazioni.empty()) {
+        std::cout << "Nessuna transazione trovata.\n";
+        return;
+    }
+
+    int saldo = 0;
+
+    for (const auto& t : transazioni) {
+        std::cout << "Data: " << t.getData() << "\n";
+        std::cout << "Tipo: " << t.getTipo() << "\n";
+        std::cout << "Importo: " << t.getImporto() << "\n";
+        std::cout << "Descrizione: " << t.getDescrizione() << "\n";
+        std::cout << "-------------------------\n";
+
+        int valore = estraiNumero(t.getImporto());
+        if (t.getTipo() == "ingresso") saldo += valore;
+        else if (t.getTipo() == "uscita") saldo -= valore;
+    }
+
+    std::cout << "Saldo attuale: " << saldo << "\n";
 }
 
 void ContoCorrente::salvaSuFile(const std::string& nomeFile) const {
     std::ofstream file(nomeFile);
     if (!file) {
-        std::cerr << "Errore nell'aprire il file per scrivere!" << std::endl;
+        std::cout << "Errore nel salvataggio del file.\n";
         return;
     }
+
     for (const auto& t : transazioni) {
-        file << t.getData() << ";" << t.getTipo() << ";" << t.getImporto() << ";" << t.getDescrizione() << "\n";
+        file << t.getTipo() << " "
+             << t.getImporto() << " "
+             << t.getData() << " "
+             << t.getDescrizione() << "\n";
     }
-    file.close();
-    std::cout << "✅ Dati salvati su file." << std::endl;
+    std::cout << "Salvato su file.\n";
 }
 
 void ContoCorrente::caricaDaFile(const std::string& nomeFile) {
     std::ifstream file(nomeFile);
     if (!file) {
-        std::cerr << "❌ File non trovato!" << std::endl;
+        std::cout << "File non trovato!\n";
         return;
     }
 
     transazioni.clear();
-    saldo = 0.0;
 
-    std::string line;
-    while (std::getline(file, line)) {
-        if (line.empty()) continue;
+    std::string tipo, importo, data, descrizione;
+    while (file >> tipo >> importo >> data) {
+        std::getline(file, descrizione);
+        if (!descrizione.empty() && descrizione[0] == ' ')
+            descrizione.erase(0,1);
 
-        std::istringstream ss(line);
-        std::string data, tipo, importoStr, descrizione;
-
-        std::getline(ss, data, ';');
-        std::getline(ss, tipo, ';');
-        std::getline(ss, importoStr, ';');
-        std::getline(ss, descrizione);
-
-        double importo = std::stod(importoStr);
-        Transazione t(tipo, importo, data, descrizione);
-        aggiungiTransazione(t);
+        transazioni.emplace_back(tipo, importo, data, descrizione);
     }
-    file.close();
-    std::cout << "✅ Dati caricati dal file." << std::endl;
+    std::cout << "Dati caricati.\n";
+}
+
+// 🔷 الدالة toLower خارج الكلاس
+std::string toLower(const std::string& s) {
+    std::string risultato = s;
+    for (char& c : risultato) {
+        c = std::tolower(c);
+    }
+    return risultato;
 }

@@ -3,30 +3,26 @@
 
 #include <string>
 
+// كلاس يمثل معاملة مالية
 class Transazione {
-private:
-    std::string tipo;         // "ingresso" أو "uscita"
-    double importo;           // المبلغ
-    std::string data;         // التاريخ
-    std::string descrizione;  // وصف
+    // بيانات المعاملة
+    std::string tipo;
+    std::string importo;
+    std::string data;
+    std::string descrizione;
 
 public:
-    Transazione();
-    Transazione(const std::string& tipo, double importo, const std::string& data, const std::string& descrizione);
+    // منشئ المعاملة
+    Transazione(std::string t, std::string i, std::string d, std::string desc);
 
+    // طباعة بيانات المعاملة
     void stampa() const;
 
-    // Getters
-    std::string getTipo() const;
-    double getImporto() const;
-    std::string getData() const;
-    std::string getDescrizione() const;
-
-    // Setters
-    void setTipo(const std::string& t);
-    void setImporto(double i);
-    void setData(const std::string& d);
-    void setDescrizione(const std::string& desc);
+    // getters
+    std::string getTipo() const { return tipo; }
+    std::string getImporto() const { return importo; }
+    std::string getData() const { return data; }
+    std::string getDescrizione() const { return descrizione; }
 };
 
 #endif
