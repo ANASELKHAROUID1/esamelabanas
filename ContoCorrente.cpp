@@ -1,10 +1,14 @@
 #include "ContoCorrente.h"
 #include <iostream>
 #include <fstream>
-#include <cctype> // ضروري لـ tolower
+#include <cctype>
 
 void ContoCorrente::aggiungiTransazione(const Transazione& t) {
     transazioni.push_back(t);
+}
+
+const std::vector<Transazione>& ContoCorrente::getTransazioni() const {
+    return transazioni;
 }
 
 int estraiNumero(const std::string& testo) {
@@ -13,7 +17,7 @@ int estraiNumero(const std::string& testo) {
         if (c >= '0' && c <= '9') {
             numero += c;
         } else {
-            break; // نتوقف عند أول حرف غير رقم
+            break; 
         }
     }
     if (numero != "") {
@@ -83,7 +87,7 @@ void ContoCorrente::caricaDaFile(const std::string& nomeFile) {
     std::cout << "Dati caricati.\n";
 }
 
-// 🔷 الدالة toLower خارج الكلاس
+
 std::string toLower(const std::string& s) {
     std::string risultato = s;
     for (char& c : risultato) {

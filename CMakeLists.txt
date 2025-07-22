@@ -8,3 +8,4 @@ add_executable(esamelabanas main.cpp
         Transazione.h
         ContoCorrente.cpp
         ContoCorrente.h)
+add_subdirectory(test)
