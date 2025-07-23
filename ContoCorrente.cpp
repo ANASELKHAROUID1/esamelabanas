@@ -17,7 +17,7 @@ int estraiNumero(const std::string& testo) {
         if (c >= '0' && c <= '9') {
             numero += c;
         } else {
-            break; 
+            break;
         }
     }
     if (numero != "") {

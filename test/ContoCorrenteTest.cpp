@@ -1,18 +1,14 @@
 #include <gtest/gtest.h>
 #include "../ContoCorrente.h"
 #include "../Transazione.h"
-#include <cstdio> // std::remove
+#include <cstdio>
 
-
-
-// ✅ Test toLower
 TEST(ContoCorrenteTest, ToLowerFunziona) {
     EXPECT_EQ(toLower("CIAO"), "ciao");
     EXPECT_EQ(toLower("Testo"), "testo");
     EXPECT_EQ(toLower("GiàMinuscolo"), "giàminuscolo");
 }
 
-// ✅ Test aggiunta e lettura transazioni
 TEST(ContoCorrenteTest, AggiuntaTransazione) {
     ContoCorrente conto;
     Transazione t("ingresso", "100", "2025-07-01", "Stipendio");
@@ -26,7 +22,6 @@ TEST(ContoCorrenteTest, AggiuntaTransazione) {
     EXPECT_EQ(transazioni[0].getDescrizione(), "Stipendio");
 }
 
-// ✅ Test salvataggio e caricamento da file
 TEST(ContoCorrenteTest, SalvaECaricaFile) {
     ContoCorrente conto;
     conto.aggiungiTransazione(Transazione("ingresso", "100", "2025-07-01", "Stipendio"));
@@ -35,7 +30,6 @@ TEST(ContoCorrenteTest, SalvaECaricaFile) {
     std::string nomeFile = "test_transazioni.txt";
     conto.salvaSuFile(nomeFile);
 
-    // Carica su un nuovo oggetto
     ContoCorrente nuovoConto;
     nuovoConto.caricaDaFile(nomeFile);
 
@@ -44,23 +38,19 @@ TEST(ContoCorrenteTest, SalvaECaricaFile) {
     EXPECT_EQ(trans[0].getDescrizione(), "Stipendio");
     EXPECT_EQ(trans[1].getTipo(), "uscita");
 
-    // Pulizia
     std::remove(nomeFile.c_str());
 }
 
-// ✅ Test stampaTransazioni (solo verifica che funzioni e stampa qualcosa)
 TEST(ContoCorrenteTest, StampaTransazioniOutput) {
     ContoCorrente conto;
     conto.aggiungiTransazione(Transazione("ingresso", "200", "2025-07-10", "Bonus"));
 
-    // Redirige cout su stringstream
     std::stringstream buffer;
     std::streambuf* oldCout = std::cout.rdbuf();
     std::cout.rdbuf(buffer.rdbuf());
 
     conto.stampaTransazioni();
-
-    std::cout.rdbuf(oldCout); // Ripristina cout
+    std::cout.rdbuf(oldCout);
 
     std::string output = buffer.str();
     EXPECT_NE(output.find("Bonus"), std::string::npos);

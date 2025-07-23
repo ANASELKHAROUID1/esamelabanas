@@ -3,7 +3,6 @@
 #include <sstream>
 #include <iostream>
 
-// Test costruttore e getter
 TEST(TestTransazione, CostruttoreEGetterFunzionano) {
     Transazione t("ingresso", "100", "2025-07-01", "stipendio");
 
@@ -13,7 +12,6 @@ TEST(TestTransazione, CostruttoreEGetterFunzionano) {
     EXPECT_EQ(t.getDescrizione(), "stipendio");
 }
 
-// Test funzione stampa con cattura semplice di std::cout
 TEST(TestTransazione, StampaFunzionaSemplice) {
     Transazione t("uscita", "50", "2025-07-02", "Spesa");
 

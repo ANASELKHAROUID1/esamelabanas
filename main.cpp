@@ -24,7 +24,6 @@ int main() {
             std::cout << "Tipo (ingresso/uscita): ";
             std::cin >> tipo;
 
-            // تحويل لحروف صغيرة
             tipo = toLower(tipo);
 
             if (tipo != "ingresso" && tipo != "uscita") {
@@ -32,7 +31,7 @@ int main() {
                 continue;
             }
 
-            std::cin.ignore(); // تنظيف البافر
+            std::cin.ignore();
             std::cout << "Importo: ";
             std::getline(std::cin, importo);
 
