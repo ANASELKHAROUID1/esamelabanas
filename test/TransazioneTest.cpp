@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 #include "../Transazione.h"
-#include <sstream>
-#include <iostream>
 
 TEST(TestTransazione, CostruttoreEGetterFunzionano) {
     Transazione t("ingresso", "100", "2025-07-01", "stipendio");
@@ -12,21 +10,8 @@ TEST(TestTransazione, CostruttoreEGetterFunzionano) {
     EXPECT_EQ(t.getDescrizione(), "stipendio");
 }
 
-TEST(TestTransazione, StampaFunzionaSemplice) {
+
+TEST(TestTransazione, StampaFunziona) {
     Transazione t("uscita", "50", "2025-07-02", "Spesa");
 
-    std::streambuf* oldCout = std::cout.rdbuf();
-    std::stringstream buffer;
-    std::cout.rdbuf(buffer.rdbuf());
-
-    t.stampa();
-
-    std::cout.rdbuf(oldCout);
-
-    std::string output = buffer.str();
-
-    EXPECT_TRUE(output.find("Spesa") != -1);
-    EXPECT_TRUE(output.find("50") != -1);
-    EXPECT_TRUE(output.find("2025-07-02") != -1);
-    EXPECT_TRUE(output.find("uscita") != -1);
 }

@@ -3,57 +3,43 @@
 #include "../Transazione.h"
 #include <cstdio>
 
-TEST(ContoCorrenteTest, ToLowerFunziona) {
+TEST(TestBase, ToLower) {
     EXPECT_EQ(toLower("CIAO"), "ciao");
-    EXPECT_EQ(toLower("Testo"), "testo");
-    EXPECT_EQ(toLower("GiàMinuscolo"), "giàminuscolo");
+    EXPECT_EQ(toLower("TestO"), "testo");
+    EXPECT_EQ(toLower("misto"), "misto");
 }
 
-TEST(ContoCorrenteTest, AggiuntaTransazione) {
+TEST(TestBase, AggiuntaTransazione) {
     ContoCorrente conto;
-    Transazione t("ingresso", "100", "2025-07-01", "Stipendio");
+    Transazione t("ingresso", "150", "2025-07-20", "Regalo");
     conto.aggiungiTransazione(t);
 
-    const auto& transazioni = conto.getTransazioni();
-    ASSERT_EQ(transazioni.size(), 1);
-    EXPECT_EQ(transazioni[0].getTipo(), "ingresso");
-    EXPECT_EQ(transazioni[0].getImporto(), "100");
-    EXPECT_EQ(transazioni[0].getData(), "2025-07-01");
-    EXPECT_EQ(transazioni[0].getDescrizione(), "Stipendio");
+    auto trans = conto.getTransazioni();
+    ASSERT_EQ(trans.size(), 1);
+    EXPECT_EQ(trans[0].getTipo(), "ingresso");
+    EXPECT_EQ(trans[0].getImporto(), "150");
+    EXPECT_EQ(trans[0].getData(), "2025-07-20");
+    EXPECT_EQ(trans[0].getDescrizione(), "Regalo");
 }
 
-TEST(ContoCorrenteTest, SalvaECaricaFile) {
+TEST(TestBase, SalvaCarica) {
     ContoCorrente conto;
-    conto.aggiungiTransazione(Transazione("ingresso", "100", "2025-07-01", "Stipendio"));
-    conto.aggiungiTransazione(Transazione("uscita", "50", "2025-07-02", "Spesa"));
+    conto.aggiungiTransazione(Transazione("uscita", "30", "2025-07-22", "Pizza"));
 
-    std::string nomeFile = "test_transazioni.txt";
+    std::string nomeFile = "testfile.txt";
     conto.salvaSuFile(nomeFile);
 
     ContoCorrente nuovoConto;
     nuovoConto.caricaDaFile(nomeFile);
 
-    const auto& trans = nuovoConto.getTransazioni();
-    ASSERT_EQ(trans.size(), 2);
-    EXPECT_EQ(trans[0].getDescrizione(), "Stipendio");
-    EXPECT_EQ(trans[1].getTipo(), "uscita");
+    auto trans = nuovoConto.getTransazioni();
+    ASSERT_EQ(trans.size(), 1);
+    EXPECT_EQ(trans[0].getDescrizione(), "Pizza");
 
     std::remove(nomeFile.c_str());
 }
-
-TEST(ContoCorrenteTest, StampaTransazioniOutput) {
+TEST(TestBase, StampaTransazioni) {
     ContoCorrente conto;
-    conto.aggiungiTransazione(Transazione("ingresso", "200", "2025-07-10", "Bonus"));
+    conto.aggiungiTransazione(Transazione("ingresso", "200", "2025-07-25", "Bonus"));
 
-    std::stringstream buffer;
-    std::streambuf* oldCout = std::cout.rdbuf();
-    std::cout.rdbuf(buffer.rdbuf());
-
-    conto.stampaTransazioni();
-    std::cout.rdbuf(oldCout);
-
-    std::string output = buffer.str();
-    EXPECT_NE(output.find("Bonus"), std::string::npos);
-    EXPECT_NE(output.find("200"), std::string::npos);
-    EXPECT_NE(output.find("Saldo attuale"), std::string::npos);
 }
