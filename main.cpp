@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "ContoCorrente.h"
-#include "Transazione.h"
+#include "contoCorrente.h"
+#include "transazione.h"
 
 int main() {
     ContoCorrente conto;

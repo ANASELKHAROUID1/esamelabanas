@@ -1,4 +1,4 @@
-#include "Transazione.h"
+#include "transazione.h"
 #include <iostream>
 
 Transazione::Transazione(std::string t, std::string i, std::string d, std::string desc)

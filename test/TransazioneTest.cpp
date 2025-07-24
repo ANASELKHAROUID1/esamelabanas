@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../Transazione.h"
+#include "../transazione.h"
 
 TEST(TestTransazione, CostruttoreEGetterFunzionano) {
     Transazione t("ingresso", "100", "2025-07-01", "stipendio");

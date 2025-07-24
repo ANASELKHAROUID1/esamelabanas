@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../ContoCorrente.h"
-#include "../Transazione.h"
+#include "../contoCorrente.h"
+#include "../transazione.h"
 #include <cstdio>
 
 TEST(TestBase, ToLower) {
